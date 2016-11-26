@@ -24,7 +24,10 @@ $app = new Laravel\Lumen\Application(
 );
 
 $app->withFacades();
+
 $app->configure('jwt');
+$app->configure('auth');
+
 class_alias('Tymon\JWTAuth\Facades\JWTAuth', 'JWTAuth');
 class_alias('Tymon\JWTAuth\Facades\JWTFactory', 'JWTFactory');
 
@@ -66,11 +69,6 @@ $app->singleton(
 //    App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-$app->routeMiddleware([
-    'jwt.auth' => Tymon\JWTAuth\Middleware\GetUserFromToken::class,
-    'jwt.refresh' => Tymon\JWTAuth\Middleware\RefreshToken::class,
-]);
-
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
@@ -82,11 +80,15 @@ $app->routeMiddleware([
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
-$app->register('Tymon\JWTAuth\Providers\JWTAuthServiceProvider');
-
+$app->register(Dingo\Api\Provider\LumenServiceProvider::class);
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+$app->register(Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
+app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app) {
+    return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
+});
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -99,7 +101,8 @@ $app->register('Tymon\JWTAuth\Providers\JWTAuthServiceProvider');
 */
 
 $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
-    require __DIR__ . '/../routes/web.php';
+    $api = app('Dingo\Api\Routing\Router');
+    require __DIR__ . '/../routes/api.php';
 });
 
 return $app;

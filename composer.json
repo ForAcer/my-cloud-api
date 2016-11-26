@@ -8,8 +8,11 @@
         "php": ">=5.6.4",
         "laravel/lumen-framework": "5.3.*",
         "vlucas/phpdotenv": "~2.2",
-        "tymon/jwt-auth": "^0.5.9",
-        "basicit/lumen-vendor-publish": "^2.0"
+        "barryvdh/laravel-ide-helper": "^2.2",
+        "basicit/lumen-vendor-publish": "^2.0",
+        "dingo/api": "1.0.*@dev",
+        "tymon/jwt-auth": "1.0.*@dev",
+        "wn/lumen-generators": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
