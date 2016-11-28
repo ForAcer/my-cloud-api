@@ -13,16 +13,20 @@
 
 $api->version('v1', function ($api) {
     $api->group(['namespace' => 'App\Http\Controllers'], function ($api) {
-        $api->get('/home', 'ExampleController@index');
-
         /**
          * 认证路由
          */
+        $api->post('authenticate', 'AuthenticateController@authenticate');
+
+        /**
+         * 需要api认证的路由
+         */
         $api->group([
-            'namespace' => 'Auth',
-            'prefix' => 'auth'
+            'middleware' => 'api.auth'
         ], function ($api) {
-            $api->post('login', 'AuthController@postLogin');
+            $api->get('home', 'ExampleController@index');
+            $api->resource('articles', 'ArticlesController');
+            $api->resource('bookmarks', 'BookmarksController');
         });
     });
 });
