@@ -16,7 +16,7 @@ $api->version('v1', function ($api) {
         /**
          * 认证路由
          */
-        $api->post('authenticate', 'AuthenticateController@authenticate');
+        $api->post('login', 'AuthenticateController@authenticate');
 
         /**
          * 需要api认证的路由
