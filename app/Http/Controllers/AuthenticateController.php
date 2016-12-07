@@ -16,9 +16,7 @@ class AuthenticateController extends Controller
      */
     public function authenticate(Request $request)
     {
-//        $credentials = $request->only('username', 'password');
-        $credentials['email']=$request->input('username');
-        $credentials['password']=$request->input('password');
+        $credentials = $request->only('email', 'password');
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid_credentials'], 401);
@@ -26,6 +24,7 @@ class AuthenticateController extends Controller
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
-        return response()->json(compact('token'));
+        $user=['username'=>'admin@admin.com'];
+        return response()->json(compact('token','user'));
     }
 }
