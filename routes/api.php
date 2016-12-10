@@ -22,7 +22,7 @@ $api->version('v1', function ($api) {
          * 需要api认证的路由
          */
         $api->group([
-            
+            'middleware' => 'api.auth'
         ], function ($api) {
             $api->get('home', 'ExampleController@index');
             $api->resource('articles', 'ArticleController');

@@ -14,7 +14,7 @@ class ArticleController extends Controller
 
     public function index()
     {
-        $articles = $this->articleRepository->paginate(15);
+        $articles = $this->articleRepository->paginate(5);
         return $this->response->array($articles->toArray());
     }
 
